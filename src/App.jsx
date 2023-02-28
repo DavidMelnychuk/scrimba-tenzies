@@ -6,6 +6,7 @@ import Confetti from "./components/Confetti";
 
 export default function App() {
   const [tenzies, setTenzies] = useState(false);
+  const [numRolls, setNumRolls] = useState(0);
   const [dice, setDice] = useState(() => allNewDice());
 
   useEffect(() => {
@@ -40,12 +41,14 @@ export default function App() {
     if (tenzies) {
       setTenzies(false);
       setDice(allNewDice());
+      setNumRolls(0);
     } else {
       setDice((oldDice) =>
         oldDice.map((die) =>
           die.isHeld ? die : { ...die, value: Math.ceil(Math.random() * 6) }
         )
       );
+      setNumRolls((rolls) => rolls + 1);
     }
   }
 
@@ -66,6 +69,9 @@ export default function App() {
         current value between rolls.
       </p>
       <div className="dice-container">{diceElements}</div>
+      {tenzies && (
+        <h2 className="roll-counter">You won in {numRolls} rolls! </h2>
+      )}
       <button className="roll-button" onClick={rollNewDice}>
         {tenzies ? "New Game" : "Roll"}
       </button>
